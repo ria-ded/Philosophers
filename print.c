@@ -26,13 +26,16 @@ static int	ft_strcmp(const char *s1, const char *s2)
 	return (0);
 }
 
+
 void	print_log(size_t timestamp, t_philo *philo, char *msg)
 {
 	size_t	time;
+	bool	stopped;
 
-	time = timestamp - philo->data->t_start;
 	pthread_mutex_lock(&philo->data->log_lock);
-	if (!philo->data->stop_flag || ft_strcmp(msg, "died") == 0)
+	stopped = simulation_stopped(philo->data);
+	time = timestamp - philo->data->t_start;
+	if (!stopped || ft_strcmp(msg, "died") == 0)
 		printf("%zu %i %s\n", time, philo->id + 1, msg);
 	pthread_mutex_unlock(&philo->data->log_lock);
 }
